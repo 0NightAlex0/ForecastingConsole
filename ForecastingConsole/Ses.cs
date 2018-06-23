@@ -29,7 +29,7 @@ namespace ForecastingConsole
             row.Smoothed = sum / count;
             row.SquaredErrors = Math.Pow(row.Smoothed - row.Demand, 2);
         }
-        private void CalculateRows(double alpha)
+        public void CalculateRows(double alpha)
         {
             foreach (KeyValuePair<double, Row> pair in _data.Skip(1))
             {
@@ -63,7 +63,8 @@ namespace ForecastingConsole
 
         public double GetBestAlpha()
         {
-            Tuple<double, double> best = new Tuple<double, double>(0, Double.MaxValue);
+            // error and alpha
+            Tuple<double, double> best = new Tuple<double, double>(Double.MaxValue, 0);
             double alpha = 0.1;
             double lastAlpha = 0.9;
             while (alpha <= lastAlpha)
@@ -71,14 +72,14 @@ namespace ForecastingConsole
                 CalculateRows(alpha);
                 double error = CalculateStandardError();
                 // if current error is less than the lowest error
-                if (error < best.Item2)
+                if (error < best.Item1)
                 {
-                    best = new Tuple<double, double>(alpha, error);
+                    best = new Tuple<double, double>(error, alpha);
                 }
                 alpha += 0.1;
             }
 
-            return best.Item1;
+            return best.Item2;
         }
 
         public void CalculateFutureForeCast(double alpha, int begin, int end)

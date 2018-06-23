@@ -16,7 +16,7 @@ namespace ForecastingConsole
             _defaultDataLength = data.Count;
             Initialize();
             CalculateRows(0.5, 0.5);
-            
+
         }
 
         private void Initialize()
@@ -26,7 +26,7 @@ namespace ForecastingConsole
             secondRow.Trend = secondRow.Demand - _data[1].Demand;
         }
 
-        private void CalculateRows(double alpha, double beta)
+        public void CalculateRows(double alpha, double beta)
         {
             foreach (KeyValuePair<double, Row> pair in _data.Skip(2))
             {
@@ -79,6 +79,44 @@ namespace ForecastingConsole
                 double forecast = lastRow.Smoothed + (i - _defaultDataLength) * lastRow.Trend;
                 _data.Add(i, new Row { Forecast = forecast });
             }
+        }
+        // fj alpha 0.8 and beta 0.8 best
+        public List<Tuple<double, double>> GetAllAlphaBetaCombinations()
+        {
+            List<Tuple<double, double>> combinations = new List<Tuple<double, double>>();
+            double begin = 0.1;
+            double end = 0.9;
+            for (double alpha = begin; alpha <= end; alpha += 0.1)
+            {
+                for (double beta = begin; beta <= end; beta += 0.1)
+                {
+                    //Console.WriteLine($"alpha: {i}  beta:{j}");
+                    combinations.Add(new Tuple<double, double>(alpha, beta));
+                }
+            }
+            return combinations;
+        }
+
+        public Tuple<double, double> GetBestAlphaBetaCombination()
+        {
+            // error (alpha and beta)
+            Tuple<double, Tuple<double, double>> best = new Tuple<double, Tuple<double, double>>(Double.MaxValue, new Tuple<double, double>(0, 0));
+            List<Tuple<double, double>> combinations = GetAllAlphaBetaCombinations();
+            foreach (Tuple<double, double> combination in combinations)
+            {
+                double alpha = combination.Item1;
+                double beta = combination.Item2;
+
+                CalculateRows(alpha, beta);
+                double error = CalculateStandardError();
+                // if current error is less than the lowest error
+                if (error < best.Item1)
+                {
+                    best = new Tuple<double, Tuple<double, double>>(error, new Tuple<double, double>(alpha, beta));
+
+                }
+            }
+            return best.Item2;
         }
     }
 }
