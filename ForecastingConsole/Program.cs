@@ -11,22 +11,26 @@ namespace ForecastingConsole
     {
         static void Main(string[] args)
         {
-            Dictionary<double, SesRow> dataSet = ParseDataSet(@"D:\github\ForecastingConsole\ForecastingConsole\SwordForecastingCSV.csv", ",");
-            Ses ses = new Ses(dataSet);
-            var x = ses.GetBestAlpha();
-            Console.WriteLine(x);
+            Dictionary<double, Row> dataSet = ParseDataSet(@"D:\github\ForecastingConsole\ForecastingConsole\SwordForecastingCSV.csv", ",");
+            //Ses ses = new Ses(dataSet);
+            //double sesAlpha = ses.GetBestAlpha();
+            //ses.CalculateFutureForeCast(sesAlpha, 37, 48);
+
+            Des des = new Des(dataSet);
+            //double  = ses.GetBestAlpha();
+            //des.CalculateFutureForeCast(sesAlpha, 37, 48);
         }
 
-        public static Dictionary<double, SesRow> ParseDataSet(string path, string seperator)
+        public static Dictionary<double, Row> ParseDataSet(string path, string seperator)
         {
             string[] lines = File.ReadAllLines(path);
-            Dictionary<double, SesRow> dataSet = new Dictionary<double, SesRow>();
+            Dictionary<double, Row> dataSet = new Dictionary<double, Row>();
             // row
             foreach(string line in lines.Skip(1).Take(36))
             {
                 string[] lineSplit = line.Split(',');
                 double time = Convert.ToDouble(lineSplit[0]);
-                dataSet.Add(time, new SesRow());
+                dataSet.Add(time, new Row());
                 dataSet[time].Demand = Convert.ToDouble(lineSplit[1]);
 
             }
