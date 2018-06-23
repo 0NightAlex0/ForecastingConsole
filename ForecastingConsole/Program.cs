@@ -18,7 +18,7 @@ namespace ForecastingConsole
 
             Des des = new Des(dataSet);
             //double  = ses.GetBestAlpha();
-            //des.CalculateFutureForeCast(sesAlpha, 37, 48);
+            //des.CalculateFutureForeCast(0.5, 0.5, 37, 48);
         }
 
         public static Dictionary<double, Row> ParseDataSet(string path, string seperator)

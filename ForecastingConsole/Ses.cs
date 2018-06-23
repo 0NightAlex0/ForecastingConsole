@@ -31,12 +31,10 @@ namespace ForecastingConsole
         }
         private void CalculateRows(double alpha)
         {
-            Row prevRow;
-            Row currentRow;
             foreach (KeyValuePair<double, Row> pair in _data.Skip(1))
             {
-                prevRow = _data[pair.Key - 1];
-                currentRow = pair.Value;
+                Row prevRow = _data[pair.Key - 1];
+                Row currentRow = pair.Value;
                 CalculateSmoothed(prevRow, currentRow, alpha);
                 CalculateSquaredErrors(currentRow);
             }
