@@ -12,8 +12,8 @@ namespace ForecastingConsole
         static void Main(string[] args)
         {
             Dictionary<double, Row> dataSet = ParseDataSet(@"D:\github\ForecastingConsole\ForecastingConsole\SwordForecastingCSV.csv", ",");
-            Ses ses = new Ses(dataSet);
-            double sesAlpha = ses.GetBestAlpha();
+            //Ses ses = new Ses(dataSet);
+            //double sesAlpha = ses.GetBestAlpha();
             //ses.CalculateFutureForeCast(sesAlpha, 37, 48);
 
             Des des = new Des(dataSet);

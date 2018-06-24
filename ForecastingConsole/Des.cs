@@ -15,7 +15,6 @@ namespace ForecastingConsole
             _data = data;
             _defaultDataLength = data.Count;
             Initialize();
-            CalculateRows(0.5, 0.5);
 
         }
 
